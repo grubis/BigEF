@@ -192,13 +192,15 @@ Partial Class BEFForm
         ChartArea1.Name = "ChartArea1"
         Me.CategoryGraph.ChartAreas.Add(ChartArea1)
         Me.CategoryGraph.DataSource = Me.ContributionBindingSource
-        Me.CategoryGraph.Location = New System.Drawing.Point(83, 48)
+        Me.CategoryGraph.Location = New System.Drawing.Point(6, 6)
         Me.CategoryGraph.Name = "CategoryGraph"
         Series1.ChartArea = "ChartArea1"
         Series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Bar
         Series1.Name = "Series1"
+        Series1.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.[String]
+        Series1.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32
         Me.CategoryGraph.Series.Add(Series1)
-        Me.CategoryGraph.Size = New System.Drawing.Size(462, 261)
+        Me.CategoryGraph.Size = New System.Drawing.Size(377, 371)
         Me.CategoryGraph.TabIndex = 0
         Me.CategoryGraph.Text = "Chart1"
         '
