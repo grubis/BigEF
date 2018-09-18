@@ -1,23 +1,58 @@
 ﻿Public Class BEFForm
     Dim CategoryNameQueue As New Queue(Of String)
-    Dim CategoryAmtArray() As Int16
+    Dim CategoryAmtArray() As Int32
+
+    Dim CategoryTotalArray() As Int32
+    Dim ContribTotalArray() As Int32
+    Dim ContribDateArray() As Date
 
     Public Sub Reload_DBs()
         Dim i As Int16
         Dim j As Int16
+        Dim LowDate As Date
+        Dim LowDateIndex As Int16
+
+        Dim r1, r2 As DataGridViewRow
+
+        Dim d1, d2 As String
+        Dim t1, t2 As String
+        Dim a1, a2 As Int32
 
         AllocationTableAdapter.Fill(BefDataSet.Allocation)
         ContributionTableAdapter.Fill(BefDataSet.Contribution)
         RegisterTableAdapter.Fill(BefDataSet.Register)
+
+        'Sort the Tables
+        For i = 0 To ContributionTable.RowCount - 2
+            LowDate = ContributionTable.Rows.Item(i).DataBoundItem("Date")
+            LowDateIndex = i
+            For j = i + 1 To ContributionTable.RowCount - 1
+                If LowDate > ContributionTable.Rows.Item(j).DataBoundItem("Date") Then
+                    LowDate = ContributionTable.Rows.Item(j).DataBoundItem("Date")
+                    LowDateIndex = j
+                End If
+                If LowDateIndex <> i Then
+                    r1 = ContributionTable.Rows.Item(i)
+                    r2 = ContributionTable.Rows.Item(j)
+                    ContributionTable.Rows.Item(i).SetValues(r2.DataBoundItem.Row)
+                    ContributionTable.Rows.Item(j).SetValues(r1.DataBoundItem.Row)
+
+
+                End If
+            Next
+        Next
+
         'Build tables for charts
         'Build category list from allocation table
         CategoryNameQueue.Clear()
 
         If AllocationTable.RowCount > 0 Then
             ReDim CategoryAmtArray(AllocationTable.RowCount - 1)
+            ReDim CategoryTotalArray(AllocationTable.RowCount - 1)
             For i = 0 To AllocationTable.RowCount - 1
                 CategoryNameQueue.Enqueue(AllocationTable.Rows.Item(i).DataBoundItem("Category").Trim)
                 CategoryAmtArray(i) = 0
+                CategoryTotalArray(i) = AllocationTable.Rows.Item(i).DataBoundItem("Amount")
             Next
         End If
 
@@ -27,13 +62,35 @@
                 For j = 0 To AllocationTable.RowCount - 1
                     If RegisterTable.Rows.Item(i).DataBoundItem("Category").Trim = AllocationTable.Rows.Item(j).DataBoundItem("Category").Trim Then
                         CategoryAmtArray(j) = CategoryAmtArray(j) + RegisterTable.Rows.Item(i).DataBoundItem("Amount")
+                        CategoryTotalArray(j) = CategoryTotalArray(j) - RegisterTable.Rows.Item(i).DataBoundItem("Amount")
+                        If CategoryTotalArray(j) < 0 Then
+                            CategoryTotalArray(j) = 0
+                        End If
                         Exit For
                     End If
                 Next
             Next
         End If
 
+        'Add contribution dates to array
+        If ContributionTable.RowCount > 0 Then
+            ReDim ContribDateArray(ContributionTable.RowCount - 1)
+            ReDim ContribTotalArray(ContributionTable.RowCount - 1)
+            For i = 0 To ContributionTable.RowCount - 1
+                ContribDateArray(i) = ContributionTable.Rows.Item(i).DataBoundItem("Date")
+                If i = 0 Then
+                    ContribTotalArray(i) = ContributionTable.Rows.Item(i).DataBoundItem("Amount")
+                Else
+                    ContribTotalArray(i) = ContribTotalArray(i - 1) + ContributionTable.Rows.Item(i).DataBoundItem("Amount")
+                End If
+            Next
+        End If
+
         CategoryGraph.Series(0).Points.DataBindXY(CategoryNameQueue, CategoryAmtArray)
+        CategoryGraph.Series(1).Points.DataBindY(CategoryTotalArray)
+        ContributionPace.Series(0).Points.DataBindXY(ContribDateArray, ContribTotalArray)
+
+        'CategoryGraph.Series(0).Points()
 
 
     End Sub
@@ -210,4 +267,7 @@
         End If
     End Sub
 
+    Private Sub ContributionTable_CellContentClick(sender As Object, e As DataGridViewCellEventArgs) Handles ContributionTable.CellContentClick
+
+    End Sub
 End Class

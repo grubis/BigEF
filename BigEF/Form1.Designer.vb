@@ -23,8 +23,13 @@ Partial Class BEFForm
     <System.Diagnostics.DebuggerStepThrough()>
     Private Sub InitializeComponent()
         Me.components = New System.ComponentModel.Container()
-        Dim ChartArea1 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
-        Dim Series1 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
+        Dim ChartArea3 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
+        Dim Series4 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
+        Dim Title3 As System.Windows.Forms.DataVisualization.Charting.Title = New System.Windows.Forms.DataVisualization.Charting.Title()
+        Dim ChartArea4 As System.Windows.Forms.DataVisualization.Charting.ChartArea = New System.Windows.Forms.DataVisualization.Charting.ChartArea()
+        Dim Series5 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
+        Dim Series6 As System.Windows.Forms.DataVisualization.Charting.Series = New System.Windows.Forms.DataVisualization.Charting.Series()
+        Dim Title4 As System.Windows.Forms.DataVisualization.Charting.Title = New System.Windows.Forms.DataVisualization.Charting.Title()
         Me.AllocationTable = New System.Windows.Forms.DataGridView()
         Me.CategoryDataGridViewTextBoxColumn = New System.Windows.Forms.DataGridViewTextBoxColumn()
         Me.AmountDataGridViewTextBoxColumn1 = New System.Windows.Forms.DataGridViewTextBoxColumn()
@@ -36,6 +41,7 @@ Partial Class BEFForm
         Me.EditAllocDesc = New System.Windows.Forms.Button()
         Me.BEFTabs = New System.Windows.Forms.TabControl()
         Me.DashboardTab = New System.Windows.Forms.TabPage()
+        Me.ContributionPace = New System.Windows.Forms.DataVisualization.Charting.Chart()
         Me.CategoryGraph = New System.Windows.Forms.DataVisualization.Charting.Chart()
         Me.ContributionBindingSource = New System.Windows.Forms.BindingSource(Me.components)
         Me.RegisterTab = New System.Windows.Forms.TabPage()
@@ -69,6 +75,7 @@ Partial Class BEFForm
         CType(Me.BefDataSet, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.BEFTabs.SuspendLayout()
         Me.DashboardTab.SuspendLayout()
+        CType(Me.ContributionPace, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.CategoryGraph, System.ComponentModel.ISupportInitialize).BeginInit()
         CType(Me.ContributionBindingSource, System.ComponentModel.ISupportInitialize).BeginInit()
         Me.RegisterTab.SuspendLayout()
@@ -178,6 +185,7 @@ Partial Class BEFForm
         '
         'DashboardTab
         '
+        Me.DashboardTab.Controls.Add(Me.ContributionPace)
         Me.DashboardTab.Controls.Add(Me.CategoryGraph)
         Me.DashboardTab.Location = New System.Drawing.Point(4, 22)
         Me.DashboardTab.Name = "DashboardTab"
@@ -187,22 +195,51 @@ Partial Class BEFForm
         Me.DashboardTab.Text = "Dashboard"
         Me.DashboardTab.UseVisualStyleBackColor = True
         '
+        'ContributionPace
+        '
+        ChartArea3.Name = "ChartArea1"
+        Me.ContributionPace.ChartAreas.Add(ChartArea3)
+        Me.ContributionPace.Location = New System.Drawing.Point(389, 12)
+        Me.ContributionPace.Name = "ContributionPace"
+        Series4.ChartArea = "ChartArea1"
+        Series4.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Line
+        Series4.Name = "Series1"
+        Me.ContributionPace.Series.Add(Series4)
+        Me.ContributionPace.Size = New System.Drawing.Size(398, 191)
+        Me.ContributionPace.TabIndex = 1
+        Me.ContributionPace.Text = "Chart1"
+        Title3.Alignment = System.Drawing.ContentAlignment.TopCenter
+        Title3.BackColor = System.Drawing.Color.Gainsboro
+        Title3.Name = "Title1"
+        Title3.Text = "Contribution Pace"
+        Me.ContributionPace.Titles.Add(Title3)
+        '
         'CategoryGraph
         '
-        ChartArea1.Name = "ChartArea1"
-        Me.CategoryGraph.ChartAreas.Add(ChartArea1)
+        ChartArea4.Name = "ChartArea1"
+        Me.CategoryGraph.ChartAreas.Add(ChartArea4)
         Me.CategoryGraph.DataSource = Me.ContributionBindingSource
         Me.CategoryGraph.Location = New System.Drawing.Point(6, 6)
         Me.CategoryGraph.Name = "CategoryGraph"
-        Series1.ChartArea = "ChartArea1"
-        Series1.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.Bar
-        Series1.Name = "Series1"
-        Series1.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.[String]
-        Series1.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32
-        Me.CategoryGraph.Series.Add(Series1)
+        Series5.ChartArea = "ChartArea1"
+        Series5.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StackedBar
+        Series5.Name = "Series1"
+        Series5.XValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.[String]
+        Series5.YValueType = System.Windows.Forms.DataVisualization.Charting.ChartValueType.Int32
+        Series6.ChartArea = "ChartArea1"
+        Series6.ChartType = System.Windows.Forms.DataVisualization.Charting.SeriesChartType.StackedBar
+        Series6.Name = "Series2"
+        Me.CategoryGraph.Series.Add(Series5)
+        Me.CategoryGraph.Series.Add(Series6)
         Me.CategoryGraph.Size = New System.Drawing.Size(377, 371)
         Me.CategoryGraph.TabIndex = 0
         Me.CategoryGraph.Text = "Chart1"
+        Title4.Alignment = System.Drawing.ContentAlignment.TopCenter
+        Title4.BackColor = System.Drawing.Color.Gainsboro
+        Title4.BackImageAlignment = System.Windows.Forms.DataVisualization.Charting.ChartImageAlignmentStyle.Top
+        Title4.Name = "Title1"
+        Title4.Text = "Spent vs. Allocated by Category"
+        Me.CategoryGraph.Titles.Add(Title4)
         '
         'ContributionBindingSource
         '
@@ -468,6 +505,7 @@ Partial Class BEFForm
         CType(Me.BefDataSet, System.ComponentModel.ISupportInitialize).EndInit()
         Me.BEFTabs.ResumeLayout(False)
         Me.DashboardTab.ResumeLayout(False)
+        CType(Me.ContributionPace, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.CategoryGraph, System.ComponentModel.ISupportInitialize).EndInit()
         CType(Me.ContributionBindingSource, System.ComponentModel.ISupportInitialize).EndInit()
         Me.RegisterTab.ResumeLayout(False)
@@ -519,4 +557,5 @@ Partial Class BEFForm
     Friend WithEvents EditRegDescription As Button
     Friend WithEvents DeleteRegEntry As Button
     Friend WithEvents CategoryGraph As DataVisualization.Charting.Chart
+    Friend WithEvents ContributionPace As DataVisualization.Charting.Chart
 End Class
